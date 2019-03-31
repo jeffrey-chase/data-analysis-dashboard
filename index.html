@@ -1,0 +1,155 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+  <meta charset="utf-8">
+
+  <title> Data Analysis Dashboard </title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <link rel="icon" href='favicon.ico'>
+  <link href="https://fonts.googleapis.com/css?family=Assistant%7CMaitree:300%7CWork+Sans" rel="stylesheet">
+
+  <link rel="stylesheet" type="text/css" href="stylesheets/index.css">
+
+  <!-- External Script d3.js Copyright 2017 Mike Bostock-->
+  <script src="https://d3js.org/d3.v5.min.js"></script>
+  
+  <script src="scripts/data-visualize.js"></script>
+
+</head>
+
+<body>
+  <header>
+    <div class='container'>
+      <h1> Data Analysis Dashboard </h1>
+    </div>
+    <nav>
+      <ul>
+        <li><a href="index.html" class="current-page"> Home </a></li>
+        <li><a href="application.html"> Application </a></li>
+        <li><a href="login.html"> Login </a></li>
+      </ul>
+    </nav>
+  </header>
+
+  <article>
+
+    <section id='about'>
+      <div class='container'>
+        <h2> About </h2>
+        <p>
+          This application was created as a way to easily perform basic statistical analysis from data. You can either upload a file to the application or copy and paste the text from a tabular data file. This will be the data that is used to generate the statistics from. Additionally, the contents of the data file will be displayed in a table for the user to review. Below that, statistics will be displayed that summarize each column of the dataset.
+        </p>
+
+        <p>
+          When it is complete, the user will be able to drag and drop variables from the parsed dataset to select specific columns that they want in the table. Additionally, they will be able to specify the data-type of the variable and drag and drop the variables into different graphing widgets that will be able to generate visualizations of the data as well as widgets to run bivariate and multivariate statistical analyses.
+        </p>
+
+      </div>
+    </section>
+    <section id='data'>
+      <div class="container">
+        <h2> Data </h2>
+        <form name="Data">
+
+          <fieldset id='data-format'>
+            <legend> Data Format</legend>
+
+            <label for="type-csv" class='enabled'>
+
+              <input type="radio" name="data-type" id="type-csv" value='csv' checked>
+              <abbr class="code enabled" title="Comma Separated Values">.csv</abbr>
+
+            </label>
+
+            <label for="type-tsv">
+              <input type="radio" name="data-type" id="type-tsv" value="tsv">
+              <abbr class='code' title="Tab Separated Values">.tsv</abbr>
+            </label>
+
+            <label for="type-json">
+
+              <input type="radio" name="data-type" id="type-json" value="json">
+              <abbr class='code' title="Javascript Object Notation">.json</abbr>
+
+            </label>
+
+            <br>
+            <label for="type-other">
+
+              <input type="radio" name="data-type" value="other" id="type-other">
+              Other Delimiter
+            </label>
+
+              <input type="text" name="delimiter" id="delimiter">
+
+
+
+            <label for="header">
+              <input type="checkbox" name="header" id="header" checked>
+              Header?
+            </label>
+          </fieldset>
+
+          <fieldset id="data-input">
+
+            <legend> Data Input </legend>
+
+            <label for="data-file"> Insert file
+              <input type="file" name="data-file" id="data-file">
+            </label>
+
+            <label for="data-link">
+              URL to file
+              <input type="url" name="data-link" id="data-link">
+            </label>
+
+            <label for="data-text"> Direct Text Input (only method that works currently)
+              <textarea name="data-text" id="data-text"></textarea>
+            </label>
+          </fieldset>
+
+          <input type="button" value='Parse' id='parse-button'>
+        </form>
+      </div>
+    </section>
+    <section>
+      <div class="container">
+        <h2> Table </h2>
+        <div id="data-table">
+
+        </div>
+      </div>
+    </section>
+
+
+    <section>
+      <div class="container">
+        <h2> Summary Statistics </h2>
+        <div id='summaries'>
+
+        </div>
+      </div>
+    </section>
+
+    <section id="visualization">
+      <div class="container">
+        <h2> Visualizations </h2>
+        <div id="plot">
+        
+        </div>
+      </div>
+    </section>
+  </article>
+
+
+  <footer>
+    <div id="author">
+      <span>Made by Jeffrey Chase at <a href="https://www.american.edu/"></a>American University</span>
+    </div>
+    <div id="accounts"></div>
+  </footer>
+</body>
+
+</html>

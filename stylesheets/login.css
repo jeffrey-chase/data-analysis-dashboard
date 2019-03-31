@@ -1,0 +1,55 @@
+.container {
+  display: flex;
+  align-items: center;
+  flex-flow: nowrap column;
+}
+
+form {
+  display: flex;
+  flex-direction: column;
+  flex-grow: 1;
+  margin: 0 auto;
+  justify-content: center;
+  align-items: center;
+}
+
+input {
+  border: 4px solid #3073b1 ;
+  border-radius: 0.2em;
+  font-size: 1.3em;
+  flex-basis: 100%;
+  padding: 20px;
+  z-index: 2;
+}
+
+input:focus {
+  transition-duration: 0.4s;
+  outline: 3px solid #3acfc7;
+}
+
+input:active {
+  border-color: white;
+}
+
+[type='submit']{
+  width: 100%;
+}
+
+label { 
+/*  color: #3acfc7;*/
+  color: #3073b1;
+
+}
+
+label.interactive {
+  bottom: -30px;
+  position: relative;
+  transition-duration: 1s;
+  position: relative;
+  z-index: 1;
+}
+
+label.show {
+  transform: scale(1.4) translateY(-20px);
+  transition-duration: 1s;
+}

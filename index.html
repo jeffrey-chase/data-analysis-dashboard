@@ -11,11 +11,13 @@
   <link href="https://fonts.googleapis.com/css?family=Assistant%7CMaitree:300%7CWork+Sans" rel="stylesheet">
 
   <link rel="stylesheet" type="text/css" href="stylesheets/index.css">
+  <link rel="stylesheet" type="text/css" href="stylesheets/application.css">
 
   <!-- External Script d3.js Copyright 2017 Mike Bostock-->
   <script src="https://d3js.org/d3.v5.min.js"></script>
-  
+
   <script src="scripts/data-visualize.js"></script>
+  <script src="scripts/interactive-layouts.js"></script>
 
 </head>
 
@@ -55,6 +57,7 @@
 
           <fieldset id='data-format'>
             <legend> Data Format</legend>
+            <h3> Column Delimiter </h3>
 
             <label for="type-csv" class='enabled'>
 
@@ -74,18 +77,14 @@
               <abbr class='code' title="Javascript Object Notation">.json</abbr>
 
             </label>
-
-            <br>
             <label for="type-other">
 
               <input type="radio" name="data-type" value="other" id="type-other">
-              Other Delimiter
+              Other Delimiter:
             </label>
+            <input type="text" name="delimiter" id="delimiter">
 
-              <input type="text" name="delimiter" id="delimiter">
-
-
-
+            <h3> Other Information </h3>
             <label for="header">
               <input type="checkbox" name="header" id="header" checked>
               Header?
@@ -114,7 +113,14 @@
         </form>
       </div>
     </section>
-    <section>
+
+    <div class="tab">
+      <button class="tablinks" id="table">Data Table</button>
+      <button class="tablinks" id="summary">Summary Statistics</button>
+      <button class="tablinks" id="visualization">Visualization</button>
+    </div>
+
+    <section id="table-section" class="tabbed">
       <div class="container">
         <h2> Table </h2>
         <div id="data-table">
@@ -124,7 +130,7 @@
     </section>
 
 
-    <section>
+    <section id="summary-section" class="tabbed">
       <div class="container">
         <h2> Summary Statistics </h2>
         <div id='summaries'>
@@ -133,11 +139,11 @@
       </div>
     </section>
 
-    <section id="visualization">
+    <section id="visualization-section" class="tabbed">
       <div class="container">
         <h2> Visualizations </h2>
         <div id="plot">
-        
+
         </div>
       </div>
     </section>

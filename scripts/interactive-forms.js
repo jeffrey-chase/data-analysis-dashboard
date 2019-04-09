@@ -1,10 +1,10 @@
 (function(){
-  window.onload = function() {
+  window.addEventListener('load', function() {
     document.querySelector("#username").onfocus = showLabel;
     document.querySelector("#password").onfocus = showLabel;
     document.querySelector("#username").onblur = hideLabels;
     document.querySelector("#password").onblur = hideLabels;
-  }
+  });
   
   function hideLabels () {
     let id = this.id;
@@ -17,11 +17,8 @@
   
   function showLabel() {
     let id = this.id;
-    console.log("label[for='"+id+"']");
     let label = document.querySelector("label[for='"+id+"']");
-    
     label.className = "interactive show";
-    
     this.setAttribute('placeholder', '');
     
   }

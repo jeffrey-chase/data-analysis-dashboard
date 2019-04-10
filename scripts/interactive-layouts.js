@@ -4,12 +4,12 @@
     for (let i = 0; i < tabs.length; i++){
       tabs[i].addEventListener('click', switchTab);
     }
+    tabs[0].dispatchEvent(new Event('click'));
   })
   
   
   function switchTab(event) {
     let showId = this.id + "-section";
-    console.log('switch')
     let tabContents = document.querySelectorAll('.tabbed');
     let tabs = document.querySelectorAll('.tab button');
     for (let i = 0; i < tabs.length; i++){

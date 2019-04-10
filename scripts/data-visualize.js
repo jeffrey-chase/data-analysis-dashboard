@@ -26,17 +26,36 @@ but it does make the table for data input as text
       dataType = 'other';
     }
 
-    let filePath = formElements[5].value;
+    let fileInput = document.getElementById('data-file');
+    let file = fileInput.files[0];
 
+    let filePath = '';
     let dataText = document.getElementById('data-text').value;
 
-    //  sampleData();
-    readData(dataType, filePath, dataText, delimiter);
+    if (file) {
 
-    //  Not working
-    let e = document.getElementById('data-table');
-    e.classList.remove('hidden');
 
+      let reader = new FileReader();
+      reader.onloadend = function (e) {
+        let filePath = e.target.result;
+        readData(dataType, filePath, dataText, delimiter);
+      }
+      reader.readAsDataURL(file);
+
+    } else {
+      readData(dataType, filePath, dataText, delimiter);
+
+    }
+
+
+  }
+
+  function checkStatus(response) {
+    if (response.status >= 200 && response.status < 300 || response.status == 0) {
+      return response.text();
+    } else {
+      return Promise.reject(new Error(response.status + ": " + response.statusText));
+    }
   }
 
 
@@ -44,104 +63,85 @@ but it does make the table for data input as text
     console.log('data type ' + dataType + ' filepath' + filePath);
     if (dataType === 'csv') {
       if (dataText === '') {
-        d3.csv(filePath).then(function (data) {
-          let columns = d3.keys(data[0]);
-          tabularize(data, columns);
-          summarize(data, columns);
-          scatterplot(data, columns);
-
-        });
+        fetch(filePath)
+          .then(checkStatus)
+          .then(d3.csvParse)
+          .then(show)
+          .catch((e) => alert('File could not be read'));
       } else {
-        console.log('no file');
-
         let data = d3.csvParse(dataText);
-        let columns = d3.keys(data[0]);
-
-        tabularize(data, columns);
-        summarize(data, columns);
-        scatterplot(data, columns);
-
+        show(data);
       }
     } else if (dataType === 'tsv') {
       if (dataText === '') {
-        d3.tsv(filePath).then(function (data) {
-          let columns = d3.keys(data[0]);
-          tabularize(data, columns);
-          summarize(data, columns);
-          scatterplot(data, columns);
-
-        });
+        fetch(filePath)
+          .then(checkStatus)
+          .then(d3.tsvParse)
+          .then(show);
       } else {
-        console.log('no file');
-
         let data = d3.tsvParse(dataText);
-        let columns = d3.keys(data[0]);
-
-        tabularize(data, columns);
-        summarize(data, columns);
-        scatterplot(data, columns);
-
+        show(data);
       }
     } else if (dataType === 'json') {
       if (dataText === '') {
-        d3.json(filePath).then(function (data) {
-          let columns = d3.keys(data[0]);
-          tabularize(data, columns);
-          summarize(data, columns);
-          scatterplot(data, columns);
-
-        });
+        fetch(filePath)
+          .then(checkStatus)
+          .then(JSON.parse)
+          .then(show);
       } else {
-        console.log('no file');
-
         let data = JSON.parse(dataText);
-        let columns = d3.keys(data[0]);
-
-        tabularize(data, columns);
-        summarize(data, columns);
-        scatterplot(data, columns);
-
+        show(data);
       }
     } else if (dataType === 'other') {
       if (dataText === '') {
-        d3.dsv(delimiter, filePath).then(function (data) {
-          let columns = d3.keys(data[0]);
-          tabularize(data, columns);
-          summarize(data, columns);
-          scatterplot(data, columns);
-        });
+        fetch(filePath)
+          .then(checkStatus)
+          .then((d) => {
+            return d3.dsvFormat(delimiter).parse(d);
+          })
+          .then(show);
       } else {
-        console.log('no file');
-        console.log('delmiter: ' + delimiter)
+        console.log('delimiter: ' + delimiter)
         let psv = d3.dsvFormat(delimiter);
 
         let data = psv.parse(dataText);
-        let columns = d3.keys(data[0]);
-
-        tabularize(data, columns);
-        summarize(data, columns);
+        show(data);
       }
     }
 
   }
 
+  function show(data) {
+    let columns = d3.keys(data[0]);
+
+    tabularize(data, columns);
+    summarize(data, columns);
+    scatterplot(data, columns);
+    let dataInputSection = document.querySelector('#data');
+    
+    // Initial value for transition
+    dataInputSection.classList.add('hide');
+  }
 
   function tabularize(data, columns) {
     console.log(data);
-    let colWidth = 100 / columns.length + '%';
+//    let colWidth = 100 / columns.length + '%';
+    let colWidth = '300px';
+    let table = d3.select('div#data-table');
+    
+    let tableContents = table.append('div')
+      .attr('id', 'table-contents');
 
-    let table = d3.select('body').select('article')
-      .select('div#data-table');
-
-    let header = table.append('div')
+    let header = tableContents.append('div')
       .attr('id', 'table-head');
 
     header.append('div')
       .attr('class', 'row');
 
-    let tableBody = table.append('div')
+    let tableBody = tableContents.append('div')
       .attr('id', 'table-body');
-
+    
+    
     header.select('div.row').selectAll('div.cell')
       .data(columns)
       .enter()
@@ -194,17 +194,14 @@ but it does make the table for data input as text
 
   function summarize(data, columns) {
     let margin = 10;
-    let colWidth = 'calc(' + 100 / columns.length + '% - ' + margin * 2 + "px)";
 
-    let summarySection = d3.select('body').select('article')
-      .select('div#summaries');
+    let summarySection = d3.select('div#summaries');
 
     let summaries = summarySection.selectAll('div.summary')
       .data(columns)
       .enter()
       .append('div')
       .attr('class', 'summary')
-      .style('width', colWidth)
       .attr('id', function (c) {
         return "summary-" + c
       });
@@ -349,9 +346,9 @@ but it does make the table for data input as text
 
     let selectors = d3.selectAll('#plot select')
       .on('change', function () {
-        selectVariables(data, svg, 400, 400);
+        selectVariables(data, svg, 400, 600);
       });
-    plot(data, columns[0], columns[0], svg, 400, 400)
+    plot(data, columns[0], columns[0], svg, 400, 600)
 
   }
 
@@ -392,7 +389,7 @@ but it does make the table for data input as text
                d3.max(data, function (d) {
           return +d[1];
         })])
-      .range([height - padding, padding/10]);
+      .range([height - padding, padding / 10]);
 
     let xAxis = d3.axisBottom().scale(xScale).ticks(5);
     let yAxis = d3.axisLeft().scale(yScale).ticks(5);
@@ -401,7 +398,7 @@ but it does make the table for data input as text
       .delay(500)
       .duration(1000)
       .ease(d3.easeLinear)
-    
+
     d3.selectAll('#plot svg *').remove();
 
 
@@ -414,16 +411,16 @@ but it does make the table for data input as text
       .attr('cy', yScale(d3.min(data, function (d) {
         return +d[1];
       })))
-//      .style('transform', function (d) {
-//        return "translateY(" + (-height + yScale(d[1])+padding)+ "px)";
-//      })
+      //      .style('transform', function (d) {
+      //        return "translateY(" + (-height + yScale(d[1])+padding)+ "px)";
+      //      })
       .style('fill', '#187cce')
       .style('stroke', 'black')
       .style('opacity', 0.8)
       .transition(t)
-      .attr('cy', function(d){
-      return yScale(d[1]);
-    });
+      .attr('cy', function (d) {
+        return yScale(d[1]);
+      });
 
     svg.append("g")
       .attr("class", "x axis")

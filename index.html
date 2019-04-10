@@ -10,7 +10,7 @@
   <link rel="icon" href='favicon.ico'>
   <link href="https://fonts.googleapis.com/css?family=Assistant%7CMaitree:300%7CWork+Sans" rel="stylesheet">
 
-  <link rel="stylesheet" type="text/css" href="stylesheets/index.css">
+  <link rel="stylesheet" type="text/css" href="stylesheets/base.css">
   <link rel="stylesheet" type="text/css" href="stylesheets/application.css">
 
   <!-- External Script d3.js Copyright 2017 Mike Bostock-->
@@ -50,7 +50,7 @@
 
       </div>
     </section>
-    <section id='data'>
+    <section id='data' class="dark">
       <div class="container">
         <h2> Data </h2>
         <form name="Data">
@@ -95,16 +95,16 @@
 
             <legend> Data Input </legend>
 
-            <label for="data-file"> Insert file
+            <label for="data-file"> Insert file (this works!)
               <input type="file" name="data-file" id="data-file">
             </label>
 
             <label for="data-link">
-              URL to file
-              <input type="url" name="data-link" id="data-link">
+              URL to file (this doesn't work)
+              <input type="url" name="data-link" id="data-link" disabled>
             </label>
 
-            <label for="data-text"> Direct Text Input (only method that works currently)
+            <label for="data-text"> Direct Text Input (this works)
               <textarea name="data-text" id="data-text"></textarea>
             </label>
           </fieldset>
@@ -113,40 +113,39 @@
         </form>
       </div>
     </section>
-
+  </article>
+  <article class="dark">
     <div class="tab">
       <button class="tablinks" id="table">Data Table</button>
       <button class="tablinks" id="summary">Summary Statistics</button>
       <button class="tablinks" id="visualization">Visualization</button>
     </div>
+    <div class="tabcontent">
+      <section id="table-section" class="tabbed">
+        <div class="container">
+          <div id="data-table">
 
-    <section id="table-section" class="tabbed">
-      <div class="container">
-        <h2> Table </h2>
-        <div id="data-table">
-
+          </div>
         </div>
-      </div>
-    </section>
+      </section>
 
 
-    <section id="summary-section" class="tabbed">
-      <div class="container">
-        <h2> Summary Statistics </h2>
-        <div id='summaries'>
+      <section id="summary-section" class="tabbed">
+        <div class="container">
+          <div id='summaries'>
 
+          </div>
         </div>
-      </div>
-    </section>
+      </section>
 
-    <section id="visualization-section" class="tabbed">
-      <div class="container">
-        <h2> Visualizations </h2>
-        <div id="plot">
+      <section id="visualization-section" class="tabbed">
+        <div class="container">
+          <div id="plot">
 
+          </div>
         </div>
-      </div>
-    </section>
+      </section>
+    </div>
   </article>
 
 

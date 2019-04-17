@@ -8,6 +8,10 @@ but it does make the table for data input as text
 (function () {
   window.onload = function () {
     document.getElementById('parse-button').onclick = parseData;
+    document.getElementById('data-file').onchange = function(){
+      this.classList.add('uploaded');
+      this.nextElementSibling.innerHTML = '<i class="fas fa-check"></i> File Uploaded ';
+    }
   };
 
   function parseData() {
@@ -33,8 +37,6 @@ but it does make the table for data input as text
     let dataText = document.getElementById('data-text').value;
 
     if (file) {
-
-
       let reader = new FileReader();
       reader.onloadend = function (e) {
         let filePath = e.target.result;

@@ -71,7 +71,7 @@ button:hover,
 [type='checkbox'],
 [type='radio'] {
   -webkit-appearance: none;
-  -moz-appearance: none;
+   -moz-appearance: none;
   background-color: white;
   display: inline-block;
   position: relative;
@@ -108,7 +108,52 @@ button:hover,
   transform: rotate(40deg);
 }
 
+[type='file'] {
+  cursor: pointer;
+  width: 95%;
+  height: 100px;
+  opacity: 0;
+  overflow: hidden;
+  position: absolute;
+}
 
+[type='file'] + label {
+  background: #C5DEF3;
+  border: 2px dashed black;
+  border-radius: 2em;
+  color: white;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100px;
+  opacity: 1 !important;
+  text-align: center;
+  margin: 15px auto;
+  width: 80%;
+}
+
+
+[type='file'].uploaded + label {
+  background: #171135;
+  color: #C5DEF3;
+  
+}
+
+
+
+[type='file'] + label [class^='fas'] {
+  font-size: 2em;
+  margin-right: 10px;
+}
+
+[type='file']:hover + label {
+  background: #3acfc7;
+  border: 2px dashed black;
+  height: 100px;
+  opacity: 1 !important;
+  text-align: center;
+  width: 80%;
+}
 
 
 /* Externally Linked Links */
@@ -137,7 +182,7 @@ a[href='#'] {
 }
 
 .dark {
-    background: #171135;
+  background: #171135;
 }
 
 /* Header */
@@ -146,7 +191,7 @@ header {
   color: white;
   overflow: hidden;
   padding: 20px 0 0 0;
-  position: fixed;
+  position: absolute;
   top: 0;
   /* Keeps it from becoming multiple lines when browser viewport width decreases */
   white-space: nowrap;
